@@ -148,9 +148,28 @@ resources:
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.52
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
     tags:
       items:
       - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          sudo apt-get update
+          sudo apt install python3-pip -y
+
+          if [ ! -d "/apps" ]; then
+            sudo mkdir /apps
+            cd /apps
+            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            cd BancoAlpes
+          else
+            cd /apps/BancoAlpes
+            sudo git pull
+          fi
 
 # Instance
 - name: home-service
@@ -168,9 +187,28 @@ resources:
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.53
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
     tags:
       items:
       - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          sudo apt-get update
+          sudo apt install python3-pip -y
+
+          if [ ! -d "/apps" ]; then
+            sudo mkdir /apps
+            cd /apps
+            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            cd BancoAlpes
+          else
+            cd /apps/BancoAlpes
+            sudo git pull
+          fi
 
 # Instance
 - name: crm-service
@@ -188,9 +226,28 @@ resources:
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.54
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
     tags:
       items:
       - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          sudo apt-get update
+          sudo apt install python3-pip -y
+
+          if [ ! -d "/apps" ]; then
+            sudo mkdir /apps
+            cd /apps
+            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            cd BancoAlpes
+          else
+            cd /apps/BancoAlpes
+            sudo git pull
+          fi
 
 # Instance
 - name: signatory-service
@@ -208,9 +265,28 @@ resources:
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.55
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
     tags:
       items:
       - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          sudo apt-get update
+          sudo apt install python3-pip -y
+
+          if [ ! -d "/apps" ]; then
+            sudo mkdir /apps
+            cd /apps
+            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            cd BancoAlpes
+          else
+            cd /apps/BancoAlpes
+            sudo git pull
+          fi
 
 # Instance
 - name: cards-service
@@ -228,11 +304,30 @@ resources:
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.56
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
     tags:
       items:
       - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          sudo apt-get update
+          sudo apt install python3-pip -y
 
-# DataBase
+          if [ ! -d "/apps" ]; then
+            sudo mkdir /apps
+            cd /apps
+            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            cd BancoAlpes
+          else
+            cd /apps/BancoAlpes
+            sudo git pull
+          fi
+
+# Instance
 - name: auth-db
   type: compute.v1.instance
   properties:
@@ -248,11 +343,30 @@ resources:
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.57
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
     tags:
       items:
       - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          sudo apt-get update
+          sudo apt install python3-pip -y
 
-# DataBase
+          if [ ! -d "/apps" ]; then
+            sudo mkdir /apps
+            cd /apps
+            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            cd BancoAlpes
+          else
+            cd /apps/BancoAlpes
+            sudo git pull
+          fi
+
+# Instance
 - name: signatory-db
   type: compute.v1.instance
   properties:
@@ -268,11 +382,30 @@ resources:
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.58
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
     tags:
       items:
       - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          sudo apt-get update
+          sudo apt install python3-pip -y
 
-# DataBase
+          if [ ! -d "/apps" ]; then
+            sudo mkdir /apps
+            cd /apps
+            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            cd BancoAlpes
+          else
+            cd /apps/BancoAlpes
+            sudo git pull
+          fi
+
+# Instance
 - name: cards-db
   type: compute.v1.instance
   properties:
@@ -288,6 +421,25 @@ resources:
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.59
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
     tags:
       items:
       - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          sudo apt-get update
+          sudo apt install python3-pip -y
+
+          if [ ! -d "/apps" ]; then
+            sudo mkdir /apps
+            cd /apps
+            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            cd BancoAlpes
+          else
+            cd /apps/BancoAlpes
+            sudo git pull
+          fi
