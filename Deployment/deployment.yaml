@@ -105,13 +105,32 @@ resources:
       items:
       - key: startup-script
         value: |
-          #!/bin/bash
           sudo apt-get update
           sudo dpkg --configure -a
           sudo apt-get install -y docker.io git
           sudo systemctl start docker
           sudo systemctl enable docker
-          sudo apt install python3-pip -y
+
+          if [ ! -d "/apps" ]; then
+            sudo mkdir /apps
+            cd /apps
+            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
+            cd MS-BancoAlpes
+          else
+            cd /apps/MS-BancoAlpes
+            sudo git pull
+          fi
+
+          cd Deployment
+
+          sudo usermod -aG docker $USER
+          newgrp docker <<EONG
+          docker ps -aq -f name=kong | xargs -r docker rm -f
+          docker network ls -q -f name=kong-net | xargs -r docker network rm
+          docker network create kong-net
+          sudo docker run -d --name kong --network=kong-net -v "$(pwd):/kong/declarative/" -e "KONG_DATABASE=off" -e "KONG_DECLARATIVE_CONFIG=/kong/declarative/kong.yaml" -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" -e "KONG_ADMIN_ACCESS_LOG=/dev/stdout" -e "KONG_PROXY_ERROR_LOG=/dev/stderr" -e "KONG_ADMIN_ERROR_LOG=/dev/stderr" -e "KONG_ADMIN_LISTEN=0.0.0.0:8001" -e "KONG_ADMIN_GUI_URL=http://localhost:8002" -p 8000:8000 -p 8001:8001 -p 8002:8002 kong/kong-gateway:2.7.2.0-alpine
+          sudo docker restart kong
+          EONG
 
 # Instance
 - name: auth-service
@@ -132,12 +151,6 @@ resources:
     tags:
       items:
       - services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          apt-get update
 
 # Instance
 - name: home-service
@@ -158,12 +171,6 @@ resources:
     tags:
       items:
       - services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          apt-get update
 
 # Instance
 - name: crm-service
@@ -184,12 +191,6 @@ resources:
     tags:
       items:
       - services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          apt-get update
 
 # Instance
 - name: signatory-service
@@ -210,12 +211,6 @@ resources:
     tags:
       items:
       - services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          apt-get update
 
 # Instance
 - name: cards-service
@@ -236,12 +231,6 @@ resources:
     tags:
       items:
       - services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          apt-get update
 
 # DataBase
 - name: auth-db
@@ -262,12 +251,6 @@ resources:
     tags:
       items:
       - services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          apt-get update
 
 # DataBase
 - name: signatory-db
@@ -288,12 +271,6 @@ resources:
     tags:
       items:
       - services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          apt-get update
 
 # DataBase
 - name: cards-db
@@ -314,9 +291,3 @@ resources:
     tags:
       items:
       - services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          #!/bin/bash
-          apt-get update
