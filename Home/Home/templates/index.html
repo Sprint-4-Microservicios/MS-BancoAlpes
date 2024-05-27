@@ -25,7 +25,10 @@
                     <a class="nav-link {% block navDeploy %}{% endblock %}" href="#">Despliegue</a>
                 </li>
             </ul>
-            <button class="btn btn-outline-success">Iniciar Sesión</button>
+            <div>
+                <p>{% if user %} Hola, {% endif %}{{ user.name }}</p>
+                <button class="btn btn-outline-{% if not user %}success{% else %}danger{% endif %}" data-bs-toggle="modal" data-bs-target="#exampleModal">{% if not user %}Iniciar Sesión{% else %}Cerrar Sesión{% endif %}</button>
+            </div>
         </div>
     </nav>
     <div class="container-fluid mb-4">

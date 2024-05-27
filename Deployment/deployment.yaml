@@ -1,13 +1,13 @@
 resources:
 # Firewall rule
-- name: services-apps
+- name: services-firewall
   type: compute.v1.firewall
   properties:
     network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
     priority: 1000
     direction: INGRESS
     sourceTags:
-    - api-gateway
+    - api-gateway-firewll
     targetTags:
     - services-firewall
     allowed:
@@ -16,7 +16,7 @@ resources:
       - 8080
 
 # Firewall rule
-- name: api-gateway
+- name: api-gateway-firewall
   type: compute.v1.firewall
   properties:
     network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
@@ -25,41 +25,73 @@ resources:
     sourceRanges:
     - 0.0.0.0/0
     targetTags:
-    - api-gateway
+    - api-gateway-firewall
     allowed:
     - IPProtocol: TCP
       ports:
       - 8000
-  
+
 # Firewall rule
-- name: db-firewall
+- name: db-firewall-auth
   type: compute.v1.firewall
   properties:
     network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
     priority: 1000
     direction: INGRESS
-    sourceTags:
-    - services-firewall
+    sourceRanges:
+    - 10.128.0.52/32
     targetTags:
-    - db-firewall
+    - db-firewall-auth
+    allowed:
+    - IPProtocol: TCP
+      ports:
+      - 27017
+
+# Firewall rule
+- name: db-firewall-signatory
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceRanges:
+    - 10.128.0.55/32
+    targetTags:
+    - db-firewall-signatory
     allowed:
     - IPProtocol: TCP
       ports:
       - 5432
 
+# Firewall rule
+- name: db-firewall-cards
+  type: compute.v1.firewall
+  properties:
+    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    priority: 1000
+    direction: INGRESS
+    sourceRanges:
+    - 10.128.0.56/32
+    targetTags:
+    - db-firewall-cards
+    allowed:
+    - IPProtocol: TCP
+      ports:
+      - 8080
+
 # Instance
-- type: compute.v1.instance
-  name: kong
+- name: api-gateway
+  type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-medium
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
       boot: true
       autoDelete: true
       initializeParams:
-        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.51
@@ -67,8 +99,8 @@ resources:
       - name: External NAT
         type: ONE_TO_ONE_NAT
     tags:
-      items: 
-      - api-gateway
+      items:
+      - api-gateway-firewall
     metadata:
       items:
       - key: startup-script
@@ -81,30 +113,9 @@ resources:
           sudo systemctl enable docker
           sudo apt install python3-pip -y
 
-          if [ ! -d "/apps" ]; then
-            sudo mkdir /apps
-            cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/MSBancoAlpes.git
-            cd MSBancoAlpes
-          else
-            cd /apps/MSBancoAlpes
-            sudo git pull
-          fi
-
-          cd Deployment
-
-          sudo usermod -aG docker $USER
-          newgrp docker <<EONG
-          docker ps -aq -f name=kong | xargs -r docker rm -f
-          docker network ls -q -f name=kong-net | xargs -r docker network rm
-          docker network create kong-net
-          sudo docker run -d --name kong --network=kong-net -v "$(pwd):/kong/declarative/" -e "KONG_DATABASE=off" -e "KONG_DECLARATIVE_CONFIG=/kong/declarative/kong.yaml" -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" -e "KONG_ADMIN_ACCESS_LOG=/dev/stdout" -e "KONG_PROXY_ERROR_LOG=/dev/stderr" -e "KONG_ADMIN_ERROR_LOG=/dev/stderr" -e "KONG_ADMIN_LISTEN=0.0.0.0:8001" -e "KONG_ADMIN_GUI_URL=http://localhost:8002" -p 8000:8000 -p 8001:8001 -p 8002:8002 kong/kong-gateway:2.7.2.0-alpine
-          sudo docker restart kong
-          EONG
-
 # Instance
-- type: compute.v1.instance
-  name: home
+- name: auth-service
+  type: compute.v1.instance
   properties:
     zone: us-central1-a
     machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
@@ -114,42 +125,101 @@ resources:
       boot: true
       autoDelete: true
       initializeParams:
-        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+      networkIP: 10.128.0.52
+    tags:
+      items:
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          apt-get update
+
+# Instance
+- name: home-service
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+      networkIP: 10.128.0.53
+    tags:
+      items:
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          apt-get update
+
+# Instance
+- name: crm-service
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+      networkIP: 10.128.0.54
+    tags:
+      items:
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          apt-get update
+
+# Instance
+- name: signatory-service
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.55
-      accessConfigs:
-      - name: External NAT
-        type: ONE_TO_ONE_NAT
     tags:
-      items: 
+      items:
       - services-firewall
     metadata:
       items:
       - key: startup-script
         value: |
           #!/bin/bash
-          sudo apt-get update
-          sudo apt install python3-pip -y
-          
-          if [ ! -d "/apps" ]; then
-            sudo mkdir /apps
-            cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/MSBancoAlpes.git
-            cd MSBancoAlpes
-          else
-            cd /apps/MSBancoAlpes
-            sudo git pull
-          fi
-
-          cd Home
-          sudo pip3 install -r Deployment/requirements.txt
-          sudo python3 manage.py makemigrations
-          sudo python3 manage.py migrate
+          apt-get update
 
 # Instance
-- type: compute.v1.instance
-  name: users
+- name: cards-service
+  type: compute.v1.instance
   properties:
     zone: us-central1-a
     machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
@@ -159,35 +229,94 @@ resources:
       boot: true
       autoDelete: true
       initializeParams:
-        sourceImage: https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20240307b
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
       networkIP: 10.128.0.56
-      accessConfigs:
-      - name: External NAT
-        type: ONE_TO_ONE_NAT
     tags:
-      items: 
+      items:
       - services-firewall
     metadata:
       items:
       - key: startup-script
         value: |
           #!/bin/bash
-          sudo apt-get update
-          sudo apt install python3-pip -y
-          
-          if [ ! -d "/apps" ]; then
-            sudo mkdir /apps
-            cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/MSBancoAlpes.git
-            cd MSBancoAlpes
-          else
-            cd /apps/MSBancoAlpes
-            sudo git pull
-          fi
+          apt-get update
 
-          cd Users
-          sudo pip3 install -r Deployment/requirements.txt
-          sudo python3 manage.py makemigrations
-          sudo python3 manage.py migrate
+# DataBase
+- name: auth-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+      networkIP: 10.128.0.57
+    tags:
+      items:
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          apt-get update
+
+# DataBase
+- name: signatory-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+      networkIP: 10.128.0.58
+    tags:
+      items:
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          apt-get update
+
+# DataBase
+- name: cards-db
+  type: compute.v1.instance
+  properties:
+    zone: us-central1-a
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+      networkIP: 10.128.0.59
+    tags:
+      items:
+      - services-firewall
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          apt-get update
