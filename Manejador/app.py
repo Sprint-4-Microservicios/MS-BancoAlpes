@@ -20,7 +20,7 @@ class Tarjeta(db.Model):
 with app.app_context():
     db.create_all()
 
-@app.route('/')
+@app.route('/asignador')
 def oferta_tdc():
     return render_template('oferta_tdc.html')
 
