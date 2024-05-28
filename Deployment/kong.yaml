@@ -37,5 +37,5 @@ upstreams:
         weight: 100
   - name: users_upstream
     targets:
-      - target: 10.128.0.58:8080
+      - target: 10.128.0.54:8080
         weight: 100

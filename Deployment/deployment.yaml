@@ -45,7 +45,7 @@ resources:
     allowed:
     - IPProtocol: TCP
       ports:
-      - 27017
+      - 5432
 
 # Firewall rule
 - name: db-firewall-signatory
@@ -76,8 +76,8 @@ resources:
     - db-firewall-cards
     allowed:
     - IPProtocol: TCP
-      ports:
-      - 8080
+      ports: 
+      - 27017
 
 # Instance
 - name: api-gateway
@@ -160,16 +160,23 @@ resources:
         value: |
           sudo apt-get update
           sudo apt install python3-pip -y
+          sudo apt-get install git -y
 
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
             sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
-            cd BancoAlpes
+            cd MS-BancoAlpes
           else
-            cd /apps/BancoAlpes
+            cd /apps/MS-BancoAlpes
             sudo git pull
           fi
+
+          sudo pip3 install -r Deployment/requirements.txt
+          cd Auth
+          sudo python3 manage.py makemigrations
+          sudo python3 manage.py migrate
+          sudo nohup python3 manage.py runserver 0.0.0.0:8080 &
 
 # Instance
 - name: home-service
@@ -199,16 +206,23 @@ resources:
         value: |
           sudo apt-get update
           sudo apt install python3-pip -y
+          sudo apt-get install git -y
 
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
             sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
-            cd BancoAlpes
+            cd MS-BancoAlpes
           else
-            cd /apps/BancoAlpes
+            cd /apps/MS-BancoAlpes
             sudo git pull
           fi
+
+          sudo pip3 install -r Deployment/requirements.txt
+          cd Home
+          sudo python3 manage.py makemigrations
+          sudo python3 manage.py migrate
+          sudo nohup python3 manage.py runserver 0.0.0.0:8080 &
 
 # Instance
 - name: crm-service
@@ -238,16 +252,23 @@ resources:
         value: |
           sudo apt-get update
           sudo apt install python3-pip -y
+          sudo apt-get install git -y
 
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
             sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
-            cd BancoAlpes
+            cd MS-BancoAlpes
           else
-            cd /apps/BancoAlpes
+            cd /apps/MS-BancoAlpes
             sudo git pull
           fi
+
+          sudo pip3 install -r Deployment/requirements.txt
+          cd Users
+          sudo python3 manage.py makemigrations
+          sudo python3 manage.py migrate
+          sudo nohup python3 manage.py runserver 0.0.0.0:8080 &
 
 # Instance
 - name: signatory-service
@@ -282,9 +303,9 @@ resources:
             sudo mkdir /apps
             cd /apps
             sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
-            cd BancoAlpes
+            cd MS-BancoAlpes
           else
-            cd /apps/BancoAlpes
+            cd /apps/MS-BancoAlpes
             sudo git pull
           fi
 
@@ -321,9 +342,9 @@ resources:
             sudo mkdir /apps
             cd /apps
             sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
-            cd BancoAlpes
+            cd MS-BancoAlpes
           else
-            cd /apps/BancoAlpes
+            cd /apps/MS-BancoAlpes
             sudo git pull
           fi
 
@@ -354,17 +375,21 @@ resources:
       - key: startup-script
         value: |
           sudo apt-get update
-          sudo apt install python3-pip -y
+          sudo apt-get install -y postgresql-11 postgresql-contrib-11
 
-          if [ ! -d "/apps" ]; then
-            sudo mkdir /apps
-            cd /apps
-            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
-            cd BancoAlpes
-          else
-            cd /apps/BancoAlpes
-            sudo git pull
-          fi
+          sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/11/main/postgresql.conf
+          echo "max_connections = 2000" | sudo tee -a /etc/postgresql/11/main/postgresql.conf
+
+          sudo bash -c "echo '# TYPE  DATABASE        USER            ADDRESS                 METHOD' >> /etc/postgresql/11/main/pg_hba.conf"
+          sudo bash -c "echo 'local   all             all                                     md5' >> /etc/postgresql/11/main/pg_hba.conf"
+          sudo bash -c "echo 'host    all             all             0.0.0.0/0               md5' >> /etc/postgresql/11/main/pg_hba.conf"
+          sudo bash -c "echo 'host    all             all             127.0.0.1/32            trust' >> /etc/postgresql/11/main/pg_hba.conf"
+          sudo bash -c "echo 'host    all             all             ::1/128                 md5' >> /etc/postgresql/11/main/pg_hba.conf"
+
+          sudo systemctl restart postgresql
+          sudo -u postgres psql -c "CREATE USER banco_alpes WITH PASSWORD 'banco_alpes';"
+          sudo -u postgres createdb -O banco_alpes banco_alpes_db
+
 
 # Instance
 # - name: signatory-db
@@ -432,14 +457,17 @@ resources:
       - key: startup-script
         value: |
           sudo apt-get update
-          sudo apt install python3-pip -y
+          sudo apt-get install -y postgresql-11 postgresql-contrib-11
 
-          if [ ! -d "/apps" ]; then
-            sudo mkdir /apps
-            cd /apps
-            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
-            cd BancoAlpes
-          else
-            cd /apps/BancoAlpes
-            sudo git pull
-          fi
+          sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/11/main/postgresql.conf
+          echo "max_connections = 2000" | sudo tee -a /etc/postgresql/11/main/postgresql.conf
+
+          sudo bash -c "echo '# TYPE  DATABASE        USER            ADDRESS                 METHOD' >> /etc/postgresql/11/main/pg_hba.conf"
+          sudo bash -c "echo 'local   all             all                                     md5' >> /etc/postgresql/11/main/pg_hba.conf"
+          sudo bash -c "echo 'host    all             all             0.0.0.0/0               md5' >> /etc/postgresql/11/main/pg_hba.conf"
+          sudo bash -c "echo 'host    all             all             127.0.0.1/32            trust' >> /etc/postgresql/11/main/pg_hba.conf"
+          sudo bash -c "echo 'host    all             all             ::1/128                 md5' >> /etc/postgresql/11/main/pg_hba.conf"
+
+          sudo systemctl restart postgresql
+          sudo -u postgres psql -c "CREATE USER banco_alpes WITH PASSWORD 'banco_alpes';"
+          sudo -u postgres createdb -O banco_alpes banco_alpes_db
