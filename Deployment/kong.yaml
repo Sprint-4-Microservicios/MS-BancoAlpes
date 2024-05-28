@@ -29,13 +29,13 @@ services:
 upstreams:
   - name: auth_upstream
     targets:
-      - target: host.docker.internal:8082
+      - target: 10.128.0.52:8080
         weight: 100
   - name: home_upstream
     targets:
-      - target: host.docker.internal:8080
+      - target: 10.128.0.53:8080
         weight: 100
   - name: users_upstream
     targets:
-      - target: host.docker.internal:8081
+      - target: 10.128.0.58:8080
         weight: 100

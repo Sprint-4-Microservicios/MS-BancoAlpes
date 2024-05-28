@@ -164,7 +164,7 @@ resources:
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
             cd BancoAlpes
           else
             cd /apps/BancoAlpes
@@ -203,7 +203,7 @@ resources:
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
             cd BancoAlpes
           else
             cd /apps/BancoAlpes
@@ -242,7 +242,7 @@ resources:
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
             cd BancoAlpes
           else
             cd /apps/BancoAlpes
@@ -281,7 +281,7 @@ resources:
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
             cd BancoAlpes
           else
             cd /apps/BancoAlpes
@@ -320,7 +320,7 @@ resources:
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
             cd BancoAlpes
           else
             cd /apps/BancoAlpes
@@ -359,7 +359,7 @@ resources:
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
             cd BancoAlpes
           else
             cd /apps/BancoAlpes
@@ -398,7 +398,7 @@ resources:
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
             cd BancoAlpes
           else
             cd /apps/BancoAlpes
@@ -437,7 +437,7 @@ resources:
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
             cd /apps
-            sudo git clone https://github.com/ArquiSoft-202410/BancoAlpes.git
+            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
             cd BancoAlpes
           else
             cd /apps/BancoAlpes
