@@ -367,43 +367,43 @@ resources:
           fi
 
 # Instance
-- name: signatory-db
-  type: compute.v1.instance
-  properties:
-    zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
-    disks:
-    - deviceName: boot
-      type: PERSISTENT
-      boot: true
-      autoDelete: true
-      initializeParams:
-        sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
-    networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
-      networkIP: 10.128.0.58
-      accessConfigs:
-      - name: External NAT
-        type: ONE_TO_ONE_NAT
-    tags:
-      items:
-      - services-firewall
-    metadata:
-      items:
-      - key: startup-script
-        value: |
-          sudo apt-get update
-          sudo apt install python3-pip -y
+# - name: signatory-db
+#   type: compute.v1.instance
+#   properties:
+#     zone: us-central1-a
+#     machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+#     disks:
+#     - deviceName: boot
+#       type: PERSISTENT
+#       boot: true
+#       autoDelete: true
+#       initializeParams:
+#         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
+#     networkInterfaces:
+#     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+#       networkIP: 10.128.0.58
+#       accessConfigs:
+#       - name: External NAT
+#         type: ONE_TO_ONE_NAT
+#     tags:
+#       items:
+#       - services-firewall
+#     metadata:
+#       items:
+#       - key: startup-script
+#         value: |
+#           sudo apt-get update
+#           sudo apt install python3-pip -y
 
-          if [ ! -d "/apps" ]; then
-            sudo mkdir /apps
-            cd /apps
-            sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
-            cd BancoAlpes
-          else
-            cd /apps/BancoAlpes
-            sudo git pull
-          fi
+#           if [ ! -d "/apps" ]; then
+#             sudo mkdir /apps
+#             cd /apps
+#             sudo git clone https://github.com/Sprint-4-Microservicios/MS-BancoAlpes.git
+#             cd BancoAlpes
+#           else
+#             cd /apps/BancoAlpes
+#             sudo git pull
+#           fi
 
 # Instance
 - name: cards-db

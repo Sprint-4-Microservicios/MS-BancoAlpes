@@ -32,7 +32,7 @@ def createUser(request):
         response = JsonResponse({'message': "User created successfully", 'data': serializer.data}, status=201)
         response.set_cookie('authToken', token, httponly=True)
         csrf_token = get_token(request)
-        apiGateway = 'http://localhost:8000/users/create/'
+        apiGateway = 'http://10.128.0.51:8000/users/create/'
         requests.post(apiGateway, json=request.data, headers={'X-CSRFToken': csrf_token}, cookies={'csrftoken': csrf_token})
         return response    
     return JsonResponse(serializer.errors, status=400)

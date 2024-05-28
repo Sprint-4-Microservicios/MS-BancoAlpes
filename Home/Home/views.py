@@ -11,13 +11,13 @@ from Home.utils.authentication import jwt_optional
 def home(request):
     user = None
     if hasattr(request, 'user_id'):
-        user = requests.get(f'http://localhost:8000/users/{request.user_id}/', cookies={'authToken': request.COOKIES.get('authToken')}).json()
+        user = requests.get(f'http://10.128.0.51:8000/users/{request.user_id}/', cookies={'authToken': request.COOKIES.get('authToken')}).json()
     if request.method == 'POST':
         if not user:
             form = CredentialsForm(request.POST)
             if form.is_valid():
                 csrf_token = get_token(request)
-                apiGateway = 'http://localhost:8000/auth/'
+                apiGateway = 'http://10.128.0.51:8000/auth/'
                 response = requests.post(apiGateway, json=form.cleaned_data, headers={'X-CSRFToken': csrf_token}, cookies={'csrftoken': csrf_token})
                 if response.status_code == 200:
                     token = response.cookies.get('authToken')
@@ -37,7 +37,7 @@ def userFormView(request):
         form = userForm(request.POST)
         if form.is_valid():
             csrf_token = get_token(request)
-            apiGateway = 'http://localhost:8000/auth/create/'
+            apiGateway = 'http://10.128.0.51:8000/auth/create/'
             data = form.cleaned_data
             data['role'] = 'user'
             response = requests.post(apiGateway, json=data, headers={'X-CSRFToken': csrf_token}, cookies={'csrftoken': csrf_token})
