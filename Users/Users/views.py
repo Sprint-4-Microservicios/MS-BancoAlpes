@@ -23,7 +23,7 @@ def createUser(request):
 @jwt_required
 def getUsers(request):
     users = User.objects.all()
-    users = [{"name": user.name, "lastName": user.lastName, "country": user.country, "city": user.city, "phone": user.phone, "email": user.email} for user in users]
+    users = [{"id": user.id,"name": user.name, "lastName": user.lastName, "country": user.country, "city": user.city, "phone": user.phone, "email": user.email} for user in users]
     #print(request.user_id)
     #print(request.user_role)
     return JsonResponse(users, safe=False, status=200)

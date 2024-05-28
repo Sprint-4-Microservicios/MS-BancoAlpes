@@ -380,11 +380,7 @@ resources:
           sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/11/main/postgresql.conf
           echo "max_connections = 2000" | sudo tee -a /etc/postgresql/11/main/postgresql.conf
 
-          sudo bash -c "echo '# TYPE  DATABASE        USER            ADDRESS                 METHOD' >> /etc/postgresql/11/main/pg_hba.conf"
-          sudo bash -c "echo 'local   all             all                                     md5' >> /etc/postgresql/11/main/pg_hba.conf"
-          sudo bash -c "echo 'host    all             all             0.0.0.0/0               md5' >> /etc/postgresql/11/main/pg_hba.conf"
-          sudo bash -c "echo 'host    all             all             127.0.0.1/32            trust' >> /etc/postgresql/11/main/pg_hba.conf"
-          sudo bash -c "echo 'host    all             all             ::1/128                 md5' >> /etc/postgresql/11/main/pg_hba.conf"
+          echo -e "# TYPE  DATABASE        USER            ADDRESS                 METHOD\nlocal   all             all                                     trust\nlocal   all             banco_alpes                             md5\nhost    all             all             127.0.0.1/32            trust\nhost    all             all             ::1/128                 trust\nhost    all             all             0.0.0.0/0               md5" | sudo tee /etc/postgresql/11/main/pg_hba.conf
 
           sudo systemctl restart postgresql
           sudo -u postgres psql -c "CREATE USER banco_alpes WITH PASSWORD 'banco_alpes';"
@@ -462,11 +458,7 @@ resources:
           sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/11/main/postgresql.conf
           echo "max_connections = 2000" | sudo tee -a /etc/postgresql/11/main/postgresql.conf
 
-          sudo bash -c "echo '# TYPE  DATABASE        USER            ADDRESS                 METHOD' >> /etc/postgresql/11/main/pg_hba.conf"
-          sudo bash -c "echo 'local   all             all                                     md5' >> /etc/postgresql/11/main/pg_hba.conf"
-          sudo bash -c "echo 'host    all             all             0.0.0.0/0               md5' >> /etc/postgresql/11/main/pg_hba.conf"
-          sudo bash -c "echo 'host    all             all             127.0.0.1/32            trust' >> /etc/postgresql/11/main/pg_hba.conf"
-          sudo bash -c "echo 'host    all             all             ::1/128                 md5' >> /etc/postgresql/11/main/pg_hba.conf"
+          echo -e "# TYPE  DATABASE        USER            ADDRESS                 METHOD\nlocal   all             all                                     trust\nlocal   all             banco_alpes                             md5\nhost    all             all             127.0.0.1/32            trust\nhost    all             all             ::1/128                 trust\nhost    all             all             0.0.0.0/0               md5" | sudo tee /etc/postgresql/11/main/pg_hba.conf
 
           sudo systemctl restart postgresql
           sudo -u postgres psql -c "CREATE USER banco_alpes WITH PASSWORD 'banco_alpes';"
