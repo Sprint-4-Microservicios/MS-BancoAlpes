@@ -25,6 +25,14 @@ services:
         paths:
           - /users
         strip_path: false
+  - host: cards_upstream
+    name: cards_service
+    protocol: http
+    routes:
+      - name: cards
+        paths:
+          - /cards
+        strip_path: false
 
 upstreams:
   - name: auth_upstream
@@ -38,4 +46,8 @@ upstreams:
   - name: users_upstream
     targets:
       - target: 10.128.0.54:8080
+        weight: 100
+  - name: cards_upstream
+    targets:
+      - target: 10.128.0.56:8080
         weight: 100
