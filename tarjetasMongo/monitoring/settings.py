@@ -135,5 +135,5 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MONGO_CLI = 'mongodb://banco_alpes:banco_alpes@10.128.0.56:27017'
+MONGO_CLI = 'mongodb://banco_alpes:banco_alpes@10.128.0.59:27017'
 
