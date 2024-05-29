@@ -3,7 +3,7 @@ resources:
 - name: services-firewall
   type: compute.v1.firewall
   properties:
-    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
     priority: 1000
     direction: INGRESS
     sourceTags:
@@ -19,7 +19,7 @@ resources:
 - name: api-gateway-firewall
   type: compute.v1.firewall
   properties:
-    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
     priority: 1000
     direction: INGRESS
     sourceRanges:
@@ -35,7 +35,7 @@ resources:
 - name: db-firewall-auth
   type: compute.v1.firewall
   properties:
-    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
     priority: 1000
     direction: INGRESS
     sourceRanges:
@@ -51,7 +51,7 @@ resources:
 - name: db-firewall-signatory
   type: compute.v1.firewall
   properties:
-    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
     priority: 1000
     direction: INGRESS
     sourceRanges:
@@ -67,7 +67,7 @@ resources:
 - name: db-firewall-cards
   type: compute.v1.firewall
   properties:
-    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
     priority: 1000
     direction: INGRESS
     sourceRanges:
@@ -84,7 +84,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/zones/us-central1-a/machineTypes/e2-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -93,7 +93,7 @@ resources:
       initializeParams:
         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
       networkIP: 10.128.0.51
       accessConfigs:
       - name: External NAT
@@ -138,7 +138,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/zones/us-central1-a/machineTypes/e2-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -147,7 +147,7 @@ resources:
       initializeParams:
         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
       networkIP: 10.128.0.52
       accessConfigs:
       - name: External NAT
@@ -184,7 +184,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/zones/us-central1-a/machineTypes/e2-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -193,7 +193,7 @@ resources:
       initializeParams:
         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
       networkIP: 10.128.0.53
       accessConfigs:
       - name: External NAT
@@ -230,7 +230,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/zones/us-central1-a/machineTypes/e2-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -239,7 +239,7 @@ resources:
       initializeParams:
         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
       networkIP: 10.128.0.54
       accessConfigs:
       - name: External NAT
@@ -276,7 +276,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/zones/us-central1-a/machineTypes/e2-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -285,7 +285,7 @@ resources:
       initializeParams:
         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
       networkIP: 10.128.0.55
       accessConfigs:
       - name: External NAT
@@ -320,7 +320,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/zones/us-central1-a/machineTypes/e2-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -329,7 +329,7 @@ resources:
       initializeParams:
         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
       networkIP: 10.128.0.56
       accessConfigs:
       - name: External NAT
@@ -365,7 +365,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/zones/us-central1-a/machineTypes/e2-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -374,7 +374,7 @@ resources:
       initializeParams:
         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
       networkIP: 10.128.0.57
       accessConfigs:
       - name: External NAT
@@ -404,7 +404,7 @@ resources:
 #   type: compute.v1.instance
 #   properties:
 #     zone: us-central1-a
-#     machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+#     machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/zones/us-central1-a/machineTypes/e2-micro
 #     disks:
 #     - deviceName: boot
 #       type: PERSISTENT
@@ -413,7 +413,7 @@ resources:
 #       initializeParams:
 #         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
 #     networkInterfaces:
-#     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+#     - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
 #       networkIP: 10.128.0.58
 #       accessConfigs:
 #       - name: External NAT
@@ -443,7 +443,7 @@ resources:
   type: compute.v1.instance
   properties:
     zone: us-central1-a
-    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes/zones/us-central1-a/machineTypes/e2-micro
+    machineType: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/zones/us-central1-a/machineTypes/e2-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -452,7 +452,7 @@ resources:
       initializeParams:
         sourceImage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-10
     networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes/global/networks/default
+    - network: https://www.googleapis.com/compute/v1/projects/msbancoalpes-424811/global/networks/default
       networkIP: 10.128.0.59
       accessConfigs:
       - name: External NAT
