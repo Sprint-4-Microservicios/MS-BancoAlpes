@@ -11,3 +11,5 @@ google-auth
 google-api-python-client
 vonage
 cryptography
+flask
+flask_sqlalchemy
