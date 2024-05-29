@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^tarjetacreate/$', csrf_exempt(views.TarjetaCreate), name='tarjetaCreate'),
     url(r'^gettarjetalist/$', views.getTarjetaList, name='getTarjetaList'),
     url(r'^tarjetaupdate/(?P<id>[a-fA-F0-9]{24})/$', csrf_exempt(views.TarjetaUpdate), name='tarjetaUpdate'),
-    url(r'^gettarjeta/(?P<id>[a-fA-F0-9]{24})/$', views.getTarjeta, name='getTarjeta'),
+    #url(r'^gettarjeta/(?P<id>[a-fA-F0-9]{24})/$', views.getTarjeta, name='getTarjeta'),
     url(r'^tarjetadelete/(?P<id>[a-fA-F0-9]{24})/$', views.deleteTarjeta, name='tarjetaDelete'),
     url('', views.TarjetaList, name='tarjetaList'),  
 ]

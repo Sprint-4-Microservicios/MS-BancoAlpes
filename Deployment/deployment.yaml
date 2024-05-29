@@ -106,6 +106,7 @@ resources:
       - key: startup-script
         value: |
           sudo apt-get update
+          sudo apt-get install git -y
           sudo dpkg --configure -a
           sudo apt-get install -y docker.io git
           sudo systemctl start docker
@@ -159,8 +160,8 @@ resources:
       - key: startup-script
         value: |
           sudo apt-get update
-          sudo apt install python3-pip -y
           sudo apt-get install git -y
+          sudo apt install python3-pip -y
 
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
@@ -205,8 +206,8 @@ resources:
       - key: startup-script
         value: |
           sudo apt-get update
-          sudo apt install python3-pip -y
           sudo apt-get install git -y
+          sudo apt install python3-pip -y
 
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
@@ -251,8 +252,8 @@ resources:
       - key: startup-script
         value: |
           sudo apt-get update
-          sudo apt install python3-pip -y
           sudo apt-get install git -y
+          sudo apt install python3-pip -y
 
           if [ ! -d "/apps" ]; then
             sudo mkdir /apps
@@ -297,6 +298,7 @@ resources:
       - key: startup-script
         value: |
           sudo apt-get update
+          sudo apt-get install git -y
           sudo apt install python3-pip -y
 
           if [ ! -d "/apps" ]; then
@@ -311,7 +313,7 @@ resources:
 
           sudo pip3 install -r Deployment/requirements.txt
           cd Manejador
-          sudo pythn3 app.py
+          sudo nohup python3 app.py &
 
 # Instance
 - name: cards-service
@@ -340,6 +342,7 @@ resources:
       - key: startup-script
         value: |
           sudo apt-get update
+          sudo apt-get install git -y
           sudo apt install python3-pip -y
 
           if [ ! -d "/apps" ]; then
@@ -354,6 +357,7 @@ resources:
 
           sudo pip3 install -r Deployment/requirements.txt
           cd tarjetasMongo
+          sudo nohup python3 manage.py runserver 0.0.0.0:8080 &
           
 
 # Instance
@@ -377,7 +381,7 @@ resources:
         type: ONE_TO_ONE_NAT
     tags:
       items:
-      - services-firewall
+      - db-firewall-auth
     metadata:
       items:
       - key: startup-script
@@ -455,7 +459,7 @@ resources:
         type: ONE_TO_ONE_NAT
     tags:
       items:
-      - services-firewall
+      - db-firewall-cards
     metadata:
       items:
       - key: startup-script

@@ -13,7 +13,7 @@ import json
 
 
 def TarjetaList(request):
-    client = MongoClient(settings.MONGO_CLI)
+    client = MongoClient('mongodb://banco_alpes:banco_alpes@10.128.0.56:27017')
     db = client.tarjetas_db
     tarjetas_collection = db['tarjetas']
     tarjetas_data = tarjetas_collection.find({})
@@ -31,7 +31,7 @@ def TarjetaCreate(request):
     if request.user_role != 'admin':
         return HttpResponse('No tienes permisos para crear tarjetas', status=403)
     else:
-        client = MongoClient(settings.MONGO_CLI)
+        client = MongoClient('mongodb://banco_alpes:banco_alpes@10.128.0.56:27017')
         db = client.tarjetas_db
         tarjetas_collection = db['tarjetas']
         if request.method == 'POST':
@@ -53,7 +53,7 @@ def TarjetaUpdate(request, id):
     if request.user_role != 'admin':
         return HttpResponse('No tienes permisos para actualizar tarjetas', status=403)
     else:
-        client = MongoClient(settings.MONGO_CLI)
+        client = MongoClient('mongodb://banco_alpes:banco_alpes@10.128.0.56:27017')
         db = client.tarjetas_db
         tarjetas_collection = db['tarjetas']
         tarjeta = tarjetas_collection.find_one({'_id': ObjectId(id)})
@@ -80,7 +80,7 @@ def TarjetaUpdate(request, id):
 
 def getTarjetaList(request):
     if request.method == 'GET':
-        client = MongoClient(settings.MONGO_CLI)
+        client = MongoClient('mongodb://banco_alpes:banco_alpes@10.128.0.56:27017')
         db = client.tarjetas_db
         tarjetas_collection = db['tarjetas']
         tarjetas_data = tarjetas_collection.find({})
@@ -100,7 +100,7 @@ def deleteTarjeta(request, id):
         if request.user_role != 'admin':
             return HttpResponse('No tienes permisos para eliminar tarjetas', status=403)    
         else:
-            client = MongoClient(settings.MONGO_CLI)
+            client = MongoClient('mongodb://banco_alpes:banco_alpes@10.128.0.56:27017')
             try:
                 db = client.tarjetas_db
                 tarjetas_collection = db['tarjetas']

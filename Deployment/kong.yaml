@@ -25,6 +25,14 @@ services:
         paths:
           - /users
         strip_path: false
+  - host: signatory_upstream
+    name: signatory_service
+    protocol: http
+    routes:
+      - name: signatory
+        paths:
+          - /asignador
+        strip_path: false
   - host: cards_upstream
     name: cards_service
     protocol: http
@@ -46,6 +54,10 @@ upstreams:
   - name: users_upstream
     targets:
       - target: 10.128.0.54:8080
+        weight: 100
+  - name: signatory_upstream
+    targets:
+      - target: 10.128.0.55:8080
         weight: 100
   - name: cards_upstream
     targets:
